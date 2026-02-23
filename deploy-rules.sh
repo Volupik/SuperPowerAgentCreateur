@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Script pour déployer tous les skills superpowers en rules plates dans un workspace
-# Usage normal via lien : bash <(curl -sL https://ton-lien-gist/deploy-rules.sh)
+# Usage normal via lien : bash <(curl -sL https://raw.githubusercontent.com/Volupik/SuperPowerAgentCreateur/main/deploy-rules.sh)
 
 TARGET_DIR=".agents/rules"
 echo "🚀 Nettoyage de l'ancien dossier s'il existe..."
@@ -75,12 +75,75 @@ for SKILL_DIR in "$TMP_DIR"/skills/*; do
   fi
 done
 
+# Split large files (> 11500 bytes)
+echo "✂️  Vérification de la taille des fichiers (limite Antigravity à 12k caractères)..."
+python3 -c "
+import os, glob
+
+target_dir = '$TARGET_DIR'
+max_chars = 11500
+
+for file_path in glob.glob(os.path.join(target_dir, '*.md')):
+    with open(file_path, 'r', encoding='utf-8') as f:
+        content = f.read()
+    
+    if len(content) > max_chars:
+        print(f'Découpage de {os.path.basename(file_path)}...')
+        part = 1
+        start = 0
+        while start < len(content):
+            end = start + max_chars
+            if end < len(content):
+                last_newline = content.rfind('\n', start, end)
+                if last_newline != -1 and last_newline > start + (max_chars // 2):
+                    end = last_newline
+            
+            chunk = content[start:end]
+            part_name = f\"{file_path[:-3]}-pt{part}.md\"
+            with open(part_name, 'w', encoding='utf-8') as out:
+                # Add a mention of the part for context
+                if part > 1:
+                    out.write(f'# Suite de la rule {os.path.basename(file_path)}\n\n')
+                out.write(chunk)
+            
+            start = end
+            part += 1
+        os.remove(file_path)
+"
+
 rm -rf "$TMP_DIR"
 
 WF_DIR=".agents/workflows"
-echo "📥 Téléchargement des Workflows standards..."
+echo "📥 Création du Workflow standard..."
 mkdir -p "$WF_DIR"
-curl -sL https://raw.githubusercontent.com/Volupik/antigravity-workspace-rules/main/workflows/the-basic-workflow.md -o "$WF_DIR/the-basic-workflow.md"
+cat << 'EOF' > "$WF_DIR/the-basic-workflow.md"
+---
+description: Le chemin de développement obligatoire pour toute fonctionnalité
+---
+1. Analyser la demande et le contexte (lire \`memory.md\`).
+2. Définir un plan clair et les étapes à suivre.
+3. Exécuter l'implémentation.
+4. Vérifier les changements et s'assurer que ça fonctionne.
+5. Mettre à jour \`memory.md\` avec les nouvelles informations importantes.
+EOF
+
+echo "📄 Création de memory.md et README.md..."
+if [ ! -f "memory.md" ]; then
+  cat << 'EOF' > memory.md
+# Workspace Memory
+
+Utilisez ce fichier pour documenter l'état actuel, les décisions architecturales, et les informations persistantes du projet.
+EOF
+fi
+
+if [ ! -f "README.md" ]; then
+  cat << 'EOF' > README.md
+# Mon Nouveau Projet Antigravity
+
+Bienvenue dans votre workspace configuré avec les rules SuperPower.
+EOF
+fi
 
 echo "✅ Fait ! $(ls \"$TARGET_DIR\" | wc -l | tr -d ' ') rules créées dans $TARGET_DIR/ et The Basic Workflow ajouté dans $WF_DIR/"
+echo "Les fichiers readme et memory ont été initialisés !"
 echo "Redémarrez Antigravity ou ouvrez l'interface Customize > Workspace pour les voir."
