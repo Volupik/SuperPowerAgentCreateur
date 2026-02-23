@@ -114,36 +114,19 @@ for file_path in glob.glob(os.path.join(target_dir, '*.md')):
 rm -rf "$TMP_DIR"
 
 WF_DIR=".agents/workflows"
-echo "📥 Création du Workflow standard..."
+echo "📥 Téléchargement du Workflow standard..."
 mkdir -p "$WF_DIR"
-cat << 'EOF' > "$WF_DIR/the-basic-workflow.md"
----
-description: Le chemin de développement obligatoire pour toute fonctionnalité
----
-1. Analyser la demande et le contexte (lire \`memory.md\`).
-2. Définir un plan clair et les étapes à suivre.
-3. Exécuter l'implémentation.
-4. Vérifier les changements et s'assurer que ça fonctionne.
-5. Mettre à jour \`memory.md\` avec les nouvelles informations importantes.
-EOF
+curl -sL https://raw.githubusercontent.com/Volupik/SuperPowerAgentCreateur/main/workflows/the-basic-workflow.md -o "$WF_DIR/the-basic-workflow.md"
 
 echo "📄 Création de memory.md et README.md..."
 if [ ! -f "memory.md" ]; then
-  cat << 'EOF' > memory.md
-# Workspace Memory
-
-Utilisez ce fichier pour documenter l'état actuel, les décisions architecturales, et les informations persistantes du projet.
-EOF
+  curl -sL https://raw.githubusercontent.com/Volupik/SuperPowerAgentCreateur/main/memory.md -o memory.md
 fi
 
-if [ ! -f "README.md" ]; then
-  cat << 'EOF' > README.md
-# Mon Nouveau Projet Antigravity
-
-Bienvenue dans votre workspace configuré avec les rules SuperPower.
-EOF
+if [ ! -f "readme.md" ]; then
+  curl -sL https://raw.githubusercontent.com/Volupik/SuperPowerAgentCreateur/main/readme.md -o readme.md
 fi
 
 echo "✅ Fait ! $(ls \"$TARGET_DIR\" | wc -l | tr -d ' ') rules créées dans $TARGET_DIR/ et The Basic Workflow ajouté dans $WF_DIR/"
-echo "Les fichiers readme et memory ont été initialisés !"
+echo "Les fichiers readme et memory ont été vérifiés/initialisés !"
 echo "Redémarrez Antigravity ou ouvrez l'interface Customize > Workspace pour les voir."
