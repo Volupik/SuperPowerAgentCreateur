@@ -58,6 +58,12 @@ mkdir -p "$DESIGN_DIR/references" "$DESIGN_DIR/sub-skills/design-aesthetics" "$D
 # Wait, TARGET_DIR IS .agents/skills. So it's already there! No need to do anything complex.
 echo "🎨 Design Visuel skill conservé localement temporairement (à committer sur github)"
 
+# === PageSpeed Optimization Skill ===
+echo "⚡ Installation du skill PageSpeed Optimization..."
+PAGESPEED_DIR="$TARGET_DIR/pagespeed-optimization"
+mkdir -p "$PAGESPEED_DIR"
+echo "⚡ PageSpeed Optimization skill conservé localement temporairement (à committer sur github)"
+
 WF_DIR=".agents/workflows"
 echo "📥 Téléchargement du Workflow standard..."
 mkdir -p "$WF_DIR"
