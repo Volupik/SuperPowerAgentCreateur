@@ -30,6 +30,8 @@ You MUST create a task for each of these items and complete them in order:
 5. **Write design doc** — save to `docs/plans/YYYY-MM-DD-<topic>-design.md` and commit
 6. **Transition to implementation** — invoke writing-plans skill to create implementation plan
 
+**The terminal state is invoking writing-plans** (after seo + design-visuel for web projects).
+
 ## Process Flow
 
 ```dot
@@ -40,6 +42,9 @@ digraph brainstorming {
     "Present design sections" [shape=box];
     "User approves design?" [shape=diamond];
     "Write design doc" [shape=box];
+    "Web project?" [shape=diamond];
+    "Invoke seo skill" [shape=box];
+    "Invoke design-visuel skill" [shape=box];
     "Invoke writing-plans skill" [shape=doublecircle];
 
     "Explore project context" -> "Ask clarifying questions";
@@ -48,11 +53,13 @@ digraph brainstorming {
     "Present design sections" -> "User approves design?";
     "User approves design?" -> "Present design sections" [label="no, revise"];
     "User approves design?" -> "Write design doc" [label="yes"];
-    "Write design doc" -> "Invoke writing-plans skill";
+    "Write design doc" -> "Web project?";
+    "Web project?" -> "Invoke seo skill" [label="yes (HTML/CSS/JS)"];
+    "Web project?" -> "Invoke writing-plans skill" [label="no (CLI/API/backend)"];
+    "Invoke seo skill" -> "Invoke design-visuel skill";
+    "Invoke design-visuel skill" -> "Invoke writing-plans skill";
 }
 ```
-
-**The terminal state is invoking writing-plans.** Do NOT invoke frontend-design, mcp-builder, or any other implementation skill. The ONLY skill you invoke after brainstorming is writing-plans.
 
 ## The Process
 
@@ -83,8 +90,12 @@ digraph brainstorming {
 - Commit the design document to git
 
 **Implementation:**
-- Invoke the writing-plans skill to create a detailed implementation plan
-- Do NOT invoke any other skill. writing-plans is the next step.
+- **Si le projet est un site web** (landing page, site vitrine, e-commerce, HTML/CSS/JS) :
+  1. Invoquer le skill **`seo`** pour l'analyse SEO et concurrentielle
+  2. Invoquer le skill **`design-visuel`** pour l'inspiration, la direction esthétique, le design system, et les assets visuels
+  3. Puis invoquer le skill **`writing-plans`** pour créer le plan d'implémentation détaillé
+- **Sinon** (CLI, API, backend, librairie, etc.) :
+  - Invoquer directement le skill **`writing-plans`** pour créer le plan d'implémentation détaillé
 
 ## Key Principles
 
