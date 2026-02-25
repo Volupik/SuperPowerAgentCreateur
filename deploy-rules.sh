@@ -41,6 +41,23 @@ cp -r "$SEO_TMP"/skills/* "$SEO_DIR/sub-skills/" 2>/dev/null
 rm -rf "$SEO_TMP"
 echo "🔍 SEO skill installé avec $(find "$SEO_DIR" -type f | wc -l | tr -d ' ') fichiers"
 
+# === Design Visuel Skill ===
+# The design-visuel skill is local since we just created it.
+# When someone runs this script from curl, it will copy the local version if we commit it, 
+# or we can pull it raw via curl. For now, we'll download it from the main github just like seo if run remotely,
+# but since the PR won't exist yet, we'll assume it's just committed.
+# We'll just copy the local .agents/skills/design-visuel directory to make sure it persists in future clones
+echo "🎨 Installation du skill Design Visuel..."
+DESIGN_DIR="$TARGET_DIR/design-visuel"
+mkdir -p "$DESIGN_DIR/references" "$DESIGN_DIR/sub-skills/design-aesthetics" "$DESIGN_DIR/sub-skills/design-animation" "$DESIGN_DIR/sub-skills/design-audit" "$DESIGN_DIR/sub-skills/design-hero" "$DESIGN_DIR/sub-skills/design-icons-images" "$DESIGN_DIR/sub-skills/design-inspiration" "$DESIGN_DIR/sub-skills/design-system"
+
+# Since the user runs this script on a fresh workspace, we need to try to download the design-visuel skill from the repo
+# Since it's not merged into github yet, we won't add the curl lines until it's committed to the repo, 
+# otherwise the deploy script will fail trying to fetch 404s.
+# For now, we just copy whatever is locally in `.agents/skills/design-visuel` to the TARGET_DIR if they differ
+# Wait, TARGET_DIR IS .agents/skills. So it's already there! No need to do anything complex.
+echo "🎨 Design Visuel skill conservé localement temporairement (à committer sur github)"
+
 WF_DIR=".agents/workflows"
 echo "📥 Téléchargement du Workflow standard..."
 mkdir -p "$WF_DIR"
