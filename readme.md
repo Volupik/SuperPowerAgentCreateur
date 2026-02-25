@@ -10,42 +10,33 @@ Ce workspace est géré par Antigravity (AI assistant). Toutes les actions doive
 
 ---
 
-## ⚠️ Configuration Initale Obligatoire (Customize > Workspace)
-
-Pour que Antigravity comprenne ce système "Superpowers", vous **devez absolument copier/coller cette phrase exacte** dans votre interface Antigravity (`Customize > Workspace > Rules`) :
-
-> **Avant de commencer la moindre tâche, vous DEVEZ lire le workflow dans `.agents/workflows/the-basic-workflow.md` et utiliser nos skills d'ingénierie avancée locaux situés dans `.agents/skills/`.**
-
-*Note : Cette phrase indique à l'IA d'utiliser nativement les dossiers de skills sans avoir besoin de saturer la limite de 12k caractères.*
-
----
-
 ## 📜 Règles fondamentales
 
-### 1. Toujours consulter les Skills
+### 1. Toujours consulter les Rules
 
-Avant **chaque action** (développement, debugging, planification, review...), l'IA doit vérifier s'il existe une skill applicable dans `.agents/skills/`.
+Avant **chaque action** (développement, debugging, planification, review...), vérifier s'il existe une rule applicable dans `.agents/rules/`.
 
-Ces 14 skills sont chargées de manière native (au format dossier avec `SKILL.md`). L'IA les parcourt en arrière-plan.
+Ces 35 rules sont locales au workspace, générées à plat (pas de sous-dossiers). Chaque fichier complémentaire est préfixé par son skill parent (ex: `writing-skills-persuasion-principles.md`).
 
-**Liste des 14 skills utilisés :**
+**Liste des 15 skills couverts (~70 fichiers au total) :**
 
-| Skill | Quand l'utiliser |
-|-------|-----------------|
-| `brainstorming` | Avant tout travail créatif — explorer les idées |
-| `dispatching-parallel-agents` | 2+ tâches indépendantes à traiter en parallèle |
-| `executing-plans` | Plan d'implémentation écrit à exécuter |
-| `finishing-a-development-branch` | Implémentation terminée, intégrer le travail |
-| `receiving-code-review` | Recevoir du feedback de code review |
-| `requesting-code-review` | Demander des code reviews (+template reviewer) |
-| `subagent-driven-development` | Plan avec tâches indépendantes (+prompts) |
-| `systematic-debugging` | Bug/comportement inattendu (+techniques, scripts) |
-| `test-driven-development` | Avant d'écrire du code (+anti-patterns) |
-| `using-git-worktrees` | Travail nécessitant isolation |
-| `using-superpowers` | Début de conversation — trouver les skills |
-| `verification-before-completion` | Avant de déclarer un travail terminé |
-| `writing-plans` | Specs pour tâche multi-étapes |
-| `writing-skills` | Créer/éditer des rules (+best practices, tests) |
+| Skill | Fichiers | Quand l'utiliser |
+|-------|----------|-----------------|
+| `brainstorming` | 1 | Avant tout travail créatif — explorer les idées |
+| `dispatching-parallel-agents` | 1 | 2+ tâches indépendantes à traiter en parallèle |
+| `executing-plans` | 1 | Plan d'implémentation écrit à exécuter |
+| `finishing-a-development-branch` | 1 | Implémentation terminée, intégrer le travail |
+| `receiving-code-review` | 1 | Recevoir du feedback de code review |
+| `requesting-code-review` | 2 | Demander des code reviews (+template reviewer) |
+| `seo` | **34** | **🔍 SEO obligatoire pour tout site web** — 12 sous-skills, 6 agents, références, scripts |
+| `subagent-driven-development` | 4 | Plan avec tâches indépendantes (+prompts) |
+| `systematic-debugging` | 11 | Bug/comportement inattendu (+techniques, scripts) |
+| `test-driven-development` | 2 | Avant d'écrire du code (+anti-patterns) |
+| `using-git-worktrees` | 1 | Travail nécessitant isolation |
+| `using-superpowers` | 1 | Début de conversation — trouver les skills |
+| `verification-before-completion` | 1 | Avant de déclarer un travail terminé |
+| `writing-plans` | 1 | Specs pour tâche multi-étapes |
+| `writing-skills` | 6 | Créer/éditer des rules (+best practices, tests) |
 
 ### 2. Toujours mettre à jour memory.md
 
@@ -78,6 +69,7 @@ Pour tout nouveau code, écrire le test d'abord, le regarder échouer, puis impl
 Ce workflow n'est pas une suggestion, c'est le **chemin de développement obligatoire**. Antigravity doit évaluer ces skills avant chaque tâche :
 
 1. **`brainstorming`** — S'active avant d'écrire le moindre code. Affine les idées brutes via des questions, explore des alternatives, présente le design par sections pour validation. Sauvegarde le document de design.
+1.5. **`seo`** — 🔍 **S'active automatiquement pour tout site web.** Identifie la niche/localité du client, recherche et analyse le concurrent #1 dans les SERPs, définit le plan SEO complet (architecture, mots-clés, schema, méta tags). 12 sous-skills : audit, technical, content (E-E-A-T), schema, sitemap, images, performance (Core Web Vitals/INP), GEO (AI Overviews), competitor pages, hreflang, programmatic SEO, planification.
 2. **`using-git-worktrees`** — S'active après l'approbation du design. Crée un espace de travail isolé sur une nouvelle branche, lance le setup du projet, vérifie que les tests de base passent (clean baseline).
 3. **`writing-plans`** — S'active avec le design approuvé. Découpe le travail en petites tâches (2-5 minutes chacune). Chaque tâche a des chemins de fichiers exacts, le code complet et les étapes de vérification.
 4. **`subagent-driven-development`** ou **`executing-plans`** — S'active avec le plan complété. Soit on dispatche un nouveau sous-agent par tâche avec une double review (conformité spécifications puis qualité du code), soit on exécute par lots (batches) avec des points de contrôle humains.
@@ -97,10 +89,17 @@ SuperPowerAgentCreateur/
 └── .agents/
     ├── workflows/
     │   └── the-basic-workflow.md
-    └── skills/            ← Dossiers natifs gérés par l'IA en back-end
+    └── skills/            ← 15 skills natifs Antigravity :
         ├── brainstorming/
-        ├── requesting-code-review/
         ├── systematic-debugging/
+        ├── test-driven-development/
+        ├── seo/               ← 🔍 SEO (basé sur claude-seo)
+        │   ├── SKILL.md       ← Orchestrateur SEO-first
+        │   ├── references/    ← CWV, E-E-A-T, schema, quality gates
+        │   ├── agents/        ← 6 agents spécialisés
+        │   ├── scripts/       ← Scripts Python utilitaires
+        │   ├── schema/        ← Templates JSON-LD
+        │   └── sub-skills/    ← 12 sous-skills spécialisés
         └── etc...
 ```
 
@@ -108,7 +107,7 @@ SuperPowerAgentCreateur/
 
 ## 🚀 Système de Déploiement
 
-Pour copier instantanément ces directives, le journal, les workflows et les skills superpowers dans n'importe quel autre Workspace, lancez cette commande à la racine :
+Pour copier instantanément ces directives, le journal, et les skills superpowers dans n'importe quel autre Workspace, lancez cette commande à la racine :
 
 ```bash
 bash <(curl -sL https://raw.githubusercontent.com/Volupik/SuperPowerAgentCreateur/main/deploy-rules.sh)
@@ -116,4 +115,15 @@ bash <(curl -sL https://raw.githubusercontent.com/Volupik/SuperPowerAgentCreateu
 
 ---
 
-> Source des skills : [obra/superpowers](https://github.com/obra/superpowers)
+## ⚡ Workflow type
+
+1. **Lire** `readme.md` + `memory.md`
+2. **Vérifier** les rules applicables dans `~/.gemini/rules/`
+3. **Exécuter** la tâche en suivant les rules
+4. **Logger** dans `memory.md`
+5. **Vérifier** le résultat avant de déclarer terminé
+
+---
+
+> Source des rules : [obra/superpowers](https://github.com/obra/superpowers)
+> Source du skill SEO : [AgriciDaniel/claude-seo](https://github.com/AgriciDaniel/claude-seo)

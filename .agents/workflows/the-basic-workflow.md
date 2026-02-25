@@ -2,6 +2,7 @@
 description: Le chemin de développement obligatoire pour toute fonctionnalité
 ---
 1. **`brainstorming`** — S'active avant d'écrire le moindre code. Affine les idées brutes via des questions, explore des alternatives, présente le design par sections pour validation. Sauvegarde le document de design.
+1.5. **`seo`** — S'active automatiquement après le brainstorming pour **tout projet web**. Identifie la niche/localité du client, recherche et analyse le concurrent #1 dans les SERPs (structure du site, mots-clés, schema markup, contenu), puis définit le plan SEO complet (architecture des pages, mots-clés cibles, schema JSON-LD, méta tags, maillage interne). Ce plan SEO guide toute la construction du site. Orchestre 12 sous-skills spécialisés.
 2. **`using-git-worktrees`** — S'active après l'approbation du design. Crée un espace de travail isolé sur une nouvelle branche, lance le setup du projet, vérifie que les tests de base passent (clean baseline).
 3. **`writing-plans`** — S'active avec le design approuvé. Découpe le travail en petites tâches (2-5 minutes chacune). Chaque tâche a des chemins de fichiers exacts, le code complet et les étapes de vérification.
 4. **`subagent-driven-development`** ou **`executing-plans`** — S'active avec le plan complété. Soit on dispatche un nouveau sous-agent par tâche avec une double review (conformité spécifications puis qualité du code), soit on exécute par lots (batches) avec des points de contrôle humains.

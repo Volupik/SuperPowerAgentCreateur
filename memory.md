@@ -75,10 +75,13 @@
 **Demande :** Utiliser mon accès GitHub MCP pour déployer le système de template directement sur un vrai repo, incluant le `readme.md` et un `memory.md` vierge.
 
 **Actions effectuées :**
-- ✅ Créé un nouveau repository public : `Volupik/SuperPowerAgentCreateur`
+- ✅ Créé un nouveau repository public : `Volupik/antigravity-workspace-rules`
 - ✅ Poussé le script `deploy-rules.sh` configuré pour utiliser les URLs raw de ce repo
 - ✅ Poussé le template `readme.md` incluant la commande magique one-liner
-- ✅ Poussé le template `memory.md`
+- ✅ Poussé le template `memory.md` vierge
+- ✅ Mis à jour le `readme.md` et ce log localement
 
 La commande magique est maintenant :
-`bash <(curl -sL https://raw.githubusercontent.com/Volupik/SuperPowerAgentCreateur/main/deploy-rules.sh)`
+`bash <(curl -sL https://raw.githubusercontent.com/Volupik/antigravity-workspace-rules/main/deploy-rules.sh) && curl -sL https://raw.githubusercontent.com/Volupik/antigravity-workspace-rules/main/readme.md -o readme.md && curl -sL https://raw.githubusercontent.com/Volupik/antigravity-workspace-rules/main/memory.md -o memory.md`
+
+---
