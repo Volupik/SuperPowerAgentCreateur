@@ -1,173 +1,102 @@
 ---
-name: seo
-description: >
-  SEO obligatoire pour tout site web construit. S'active automatiquement pendant
-  le brainstorming/planning de tout projet web. Identifie la niche et localité du
-  client, analyse le concurrent #1 dans les SERPs, et impose une architecture
-  SEO-first. Orchestre 12 sous-skills spécialisés : audit, technical, content (E-E-A-T),
-  schema markup, sitemap, images, performance (Core Web Vitals/INP), GEO (AI Overviews),
-  competitor pages, hreflang, programmatic SEO, et planification stratégique.
-  Basé sur claude-seo (github.com/AgriciDaniel/claude-seo).
+name: seo-expert
+description: "Skill SEO expert complet pour Claude Code. Utilise ce skill dès que l'utilisateur mentionne SEO, référencement, optimisation pour les moteurs de recherche, positionnement Google, mots-clés, backlinks, SERP, Core Web Vitals, schema markup, contenu optimisé, maillage interne, audit SEO, migration SEO, indexation, crawl, sitemap, robots.txt, balises meta, title tag, meta description, canonical, hreflang, rich snippets, featured snippets, People Also Ask, E-E-A-T, topical authority, content clusters, ou toute tâche liée à l'amélioration de la visibilité organique d'un site web. Couvre le SEO technique, on-page, off-page, local, e-commerce, international, et la stratégie de contenu. Utilise aussi ce skill quand l'utilisateur demande de créer du contenu pour un site web, d'optimiser des pages, d'analyser la concurrence SEO, de planifier une architecture de site, ou de résoudre des problèmes d'indexation. Ne PAS utiliser pour du SEA/Google Ads pur (sauf synergie SEO/SEA), du développement web sans composante SEO, ou du design UI/UX sans impact sur le référencement."
 ---
 
-# SEO — Skill SEO Obligatoire pour Tout Site Web
+# SEO Expert Skill — Guide Complet
 
-Chaque site construit via ce workspace **DOIT** être optimisé SEO dès la conception.
-Ce skill orchestre 12 sous-skills spécialisés et impose un process SEO-first.
+> **APPROCHE LOCALE PRIORITAIRE (95% DES CAS)** : Ce workspace se concentre de manière écrasante sur le SEO Local. Privilégiez TOUJOURS la section [SEO Local](sub-skills/seo-local/SKILL.md). L'optimisation Google Business Profile, la cohérence du NAP (Name, Address, Phone), les pages de villes/zones géographiques (sans contenu dupliqué !) et le Schema `LocalBusiness` sont des priorités absolues avant toute autre considération technique globale. 
 
-## 🚨 RÈGLE ABSOLUE
-
-**Ce skill s'active AUTOMATIQUEMENT dès qu'un site web est en cours de construction.**
-Il se déclenche entre le brainstorming et le git-worktree dans le workflow basic.
-
-Triggers : "site web", "website", "landing page", "page", "HTML", "construire un site",
-"créer un site", "refonte", "redesign", tout projet impliquant du HTML/CSS/JS destiné
-à être déployé sur un domaine.
+## Table des matières
+- **Philosophie & Principes fondamentaux** (ci-dessous)
+- [Architecture & SEO Technique](sub-skills/seo-technique/SKILL.md)
+- [SEO On-Page](sub-skills/seo-on-page/SKILL.md)
+- [Stratégie de contenu & E-E-A-T](sub-skills/seo-strategie-contenu/SKILL.md)
+- [SEO Off-Page & Autorité](sub-skills/seo-off-page/SKILL.md)
+- **[SEO Local (PRIORITÉ ABSOLUE)](sub-skills/seo-local/SKILL.md)**
+- [SEO E-commerce](sub-skills/seo-ecommerce/SKILL.md)
+- [Audit SEO — Méthodologie](sub-skills/seo-audit/SKILL.md)
 
 ---
 
-## Process SEO-First (Obligatoire)
+## 1. Philosophie & Principes Fondamentaux
 
-### Étape 1 — Identification Niche & Localité
+### Ce que Google veut réellement
+Google optimise pour la satisfaction utilisateur à long terme. Toute stratégie SEO doit s'aligner sur ce principe. Les trois piliers de Google sont :
 
-Avant toute chose, identifier :
-- **La niche** : quel secteur ? (restaurant, plombier, avocat, SaaS, e-commerce, etc.)
-- **La localité** : quelle zone géographique ? (ville, région, pays)
-- **Le public cible** : qui sont les clients ?
-- **Les mots-clés principaux** : quelles requêtes les clients tapent ?
+*   **Pertinence** : Le contenu répond-il précisément à l'intention de recherche ?
+*   **Qualité** : Le contenu démontre-t-il expertise, expérience, autorité et fiabilité (E-E-A-T) ?
+*   **Expérience utilisateur** : Le site est-il rapide, accessible, sécurisé et agréable à utiliser ?
 
-Poser ces questions au client si les infos ne sont pas claires.
+### Les 4 types d'intention de recherche
+Toujours identifier l'intention AVANT de créer du contenu :
 
-### Étape 2 — Analyse du Concurrent #1
+| Intention | Signal | Exemple | Format optimal |
+| :--- | :--- | :--- | :--- |
+| **Informationnelle** | comment, pourquoi, qu'est-ce que | "comment choisir un matelas" | Guide long, FAQ, tutoriel |
+| **Navigationnelle** | nom de marque, site spécifique | "amazon login" | Page d'accueil, page de marque |
+| **Commerciale** | meilleur, comparatif, avis | "meilleur aspirateur 2025" | Comparatif, test, top X |
+| **Transactionnelle** | acheter, prix, commander | "acheter iPhone 16 Pro" | Page produit, collection |
 
-1. **Rechercher les concurrents** : utiliser `search_web` pour trouver les sites qui rankent #1 sur les mots-clés principaux de la niche + localité
-2. **Analyser le site concurrent** avec `read_url_content` :
-   - Structure des pages (quelles pages existent, quelle hiérarchie)
-   - Titres H1/H2/H3 et mots-clés utilisés
-   - Schema markup implémenté (JSON-LD)
-   - Nombre de mots par page
-   - Méta titres et descriptions
-   - Stratégie de contenu (blog, FAQ, témoignages, etc.)
-3. **Documenter les findings** dans un fichier `SEO-COMPETITOR-ANALYSIS.md`
-
-### Étape 3 — Plan SEO du Site
-
-Générer un plan SEO qui inclut :
-- **Architecture de pages** inspirée du concurrent mais améliorée
-- **Mots-clés cibles** par page (principal + secondaires + longue traîne)
-- **Schema markup prévu** par page (LocalBusiness, Organization, Service, etc.)
-- **Stratégie de contenu** : nombre de mots minimum par page, structure E-E-A-T
-- **Méta tags** : titre et description pour chaque page
-- **Maillage interne** : liens entre les pages
-
-### Étape 4 — Implémentation SEO pendant la construction
-
-Pendant la construction du site, **chaque page doit inclure** :
-
-#### HTML obligatoire
-- `<title>` optimisé avec mot-clé principal (50-60 caractères)
-- `<meta name="description">` convaincante (150-160 caractères)
-- `<meta name="viewport">` pour mobile-first
-- `<link rel="canonical">` pour éviter le duplicate content
-- Hiérarchie de titres correcte : un seul `<h1>`, puis `<h2>`, `<h3>`...
-- Images avec `alt` descriptif, `width`, `height`, format WebP/AVIF
-- Liens internes entre les pages
-- Open Graph tags (`og:title`, `og:description`, `og:image`)
-
-#### Schema markup obligatoire (JSON-LD)
-```html
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "LocalBusiness", // ou Organization, Service, etc.
-  "name": "...",
-  "url": "...",
-  "telephone": "...",
-  "address": { ... },
-  "openingHours": "...",
-  "image": "..."
-}
-</script>
-```
-
-Voir `schema/templates.json` pour les templates complets.
-**NE JAMAIS** recommander HowTo schema (déprécié Sept 2023).
-FAQ schema **UNIQUEMENT** pour sites gouvernementaux/santé.
-
-#### Performance (Core Web Vitals)
-- LCP < 2.5s : images hero en WebP, preload, critical CSS
-- INP < 200ms : pas de JS bloquant, scripts en defer/async
-- CLS < 0.1 : dimensions sur images, pas d'injection dynamique
-
-**IMPORTANT** : INP a remplacé FID le 12 mars 2024. Ne JAMAIS référencer FID.
-
-#### Fichiers SEO
-- `sitemap.xml` — toutes les URLs du site
-- `robots.txt` — directives de crawl
-- Fichier `manifest.json` pour PWA (optionnel mais recommandé)
+### Framework de décision SEO
+1. Analyser l'intention de recherche (SERP analysis)
+2. Étudier le contenu qui rank (top 10)
+3. Identifier le gap de contenu/qualité
+4. Créer du contenu 10x meilleur
+5. Optimiser techniquement
+6. Construire l'autorité (liens, mentions)
+7. Mesurer, itérer, améliorer
 
 ---
 
-## Quick Reference — Sous-Skills
+## Workflows Claude Code
 
-| Commande | Ce que ça fait | Fichier |
-|----------|---------------|---------|
-| seo-audit | Audit SEO complet avec délégation parallèle | `sub-skills/seo-audit/SKILL.md` |
-| seo-page | Analyse approfondie d'une seule page | `sub-skills/seo-page/SKILL.md` |
-| seo-technical | SEO technique (8 catégories) | `sub-skills/seo-technical/SKILL.md` |
-| seo-content | Qualité contenu E-E-A-T | `sub-skills/seo-content/SKILL.md` |
-| seo-schema | Détection/validation/génération Schema.org | `sub-skills/seo-schema/SKILL.md` |
-| seo-images | Optimisation images | `sub-skills/seo-images/SKILL.md` |
-| seo-sitemap | Analyse et génération sitemaps XML | `sub-skills/seo-sitemap/SKILL.md` |
-| seo-geo | AI Overviews / GEO (Generative Engine Optimization) | `sub-skills/seo-geo/SKILL.md` |
-| seo-plan | Planification stratégique SEO | `sub-skills/seo-plan/SKILL.md` |
-| seo-programmatic | SEO programmatique | `sub-skills/seo-programmatic/SKILL.md` |
-| seo-competitor-pages | Pages de comparaison concurrents | `sub-skills/seo-competitor-pages/SKILL.md` |
-| seo-hreflang | Audit hreflang / i18n | `sub-skills/seo-hreflang/SKILL.md` |
+### Quand l'utilisateur demande du contenu SEO
+1. Identifier le type de page (article, collection, produit, landing)
+2. Rechercher le mot-clé principal et analyser la SERP
+3. Identifier l'intention de recherche dominante
+4. Analyser les top résultats (structure, longueur, format)
+5. Créer un outline détaillé avec Hn
+6. Rédiger en respectant toutes les optimisations on-page
+7. Ajouter le schema markup approprié (surtout LocalBusiness !)
+8. Proposer le maillage interne
+9. Rédiger la meta description et le title tag
 
-## Agents Spécialisés
+### Quand l'utilisateur demande un audit
+1. Demander l'URL du site et l'accès à Google Search Console si possible
+2. Lire `sub-skills/seo-audit/SKILL.md` pour la méthodologie détaillée
+3. Suivre les 8 phases systématiquement
+4. Produire un rapport avec recommandations priorisées
+5. Fournir un plan d'action avec estimation d'impact
 
-6 agents pour l'analyse parallèle pendant les audits :
-- `agents/seo-technical.md` — Crawlabilité, indexabilité, sécurité, CWV
-- `agents/seo-content.md` — E-E-A-T, lisibilité, contenu mince
-- `agents/seo-schema.md` — Détection, validation, génération
-- `agents/seo-sitemap.md` — Structure, couverture, quality gates
-- `agents/seo-performance.md` — Mesure Core Web Vitals
-- `agents/seo-visual.md` — Screenshots, test mobile, above-the-fold
+### Quand l'utilisateur demande une architecture de site
+1. Comprendre le secteur et les objectifs business (Local = 95% du temps)
+2. Faire une recherche de mots-clés exhaustive
+3. Organiser en topic clusters
+4. Définir la structure URL
+5. Planifier le maillage interne
+6. Créer le sitemap préliminaire
+7. Lire `sub-skills/seo-technique/SKILL.md` pour les détails techniques
 
-## Références (charger à la demande)
-
-- `references/cwv-thresholds.md` — Seuils Core Web Vitals actuels
-- `references/schema-types.md` — Types schema.org supportés + dépréciés
-- `references/eeat-framework.md` — Critères E-E-A-T (Sept 2025 QRG)
-- `references/quality-gates.md` — Minimums de contenu, seuils d'unicité
-
-## Détection d'Industrie
-
-Détecter le type de business depuis les signaux de la homepage :
-- **SaaS** : page pricing, /features, /integrations, "free trial"
-- **Local Service** : téléphone, adresse, zone de service, "à [ville]", Google Maps
-- **E-commerce** : /products, /cart, "ajouter au panier", schema Product
-- **Publisher** : /blog, /articles, schema Article, pages auteurs
-- **Agence** : /case-studies, /portfolio, logos clients
-
-## Scoring SEO (0-100)
-
-| Catégorie | Poids |
-|-----------|-------|
-| SEO Technique | 25% |
-| Qualité Contenu | 25% |
-| SEO On-Page | 20% |
-| Schema / Données structurées | 10% |
-| Performance (CWV) | 10% |
-| Images | 5% |
-| AI Search Readiness | 5% |
-
-## Quality Gates
-
-- ⚠️ WARNING à 30+ pages de localisation (exiger 60%+ contenu unique)
-- 🛑 HARD STOP à 50+ pages de localisation (justification utilisateur requise)
+### Quand l'utilisateur demande une stratégie SEO
+1. Audit rapide de la situation actuelle
+2. Analyse concurrentielle
+3. Recherche de mots-clés et priorisation
+4. Plan de contenu (topics, formats, fréquence)
+5. Stratégie de link building
+6. KPIs et objectifs mesurables
+7. Roadmap trimestrielle
 
 ---
 
-> Source : [AgriciDaniel/claude-seo](https://github.com/AgriciDaniel/claude-seo)
+## Règles absolues (TOUJOURS respecter)
+*   **Jamais de contenu dupliqué** — Chaque page (et surtout chaque page "Ville") doit avoir un contenu unique et une valeur ajoutée propre.
+*   **Jamais de keyword stuffing** — Écrire pour l'humain d'abord, optimiser pour Google ensuite.
+*   **Toujours une balise title et meta description uniques par page**
+*   **Toujours une seule balise H1 par page**
+*   **Toujours un canonical sur chaque page indexable**
+*   **Mobile-first** — Toute optimisation doit fonctionner sur mobile.
+*   **HTTPS obligatoire** — Sans exception.
+*   **Vitesse = ranking** — Chaque milliseconde compte (Core Web Vitals).
+*   **L'intention de recherche prime** — Un contenu parfaitement optimisé mais hors-sujet ne rankera jamais.
+*   **E-E-A-T n'est pas optionnel** — C'est un facteur de plus en plus déterminant, surtout pour YMYL (Your Money Your Life) et pour gagner la confiance en Local.

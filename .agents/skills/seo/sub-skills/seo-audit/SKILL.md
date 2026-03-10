@@ -1,107 +1,44 @@
 ---
 name: seo-audit
-description: >
-  Full website SEO audit with parallel subagent delegation. Crawls up to 500
-  pages, detects business type, delegates to 6 specialists, generates health
-  score. Use when user says "audit", "full SEO check", "analyze my site",
-  or "website health check".
+description: "Sous-skill détaillant la méthodologie stricte pour mener un audit SEO complet avec Antigravity."
 ---
 
-# Full Website SEO Audit
+# Audit SEO — Méthodologie & Checklist Complète
 
-## Process
+Si l'utilisateur demande d'auditer un site existant ou vient de brancher un repo, voici le workflow en 8 phases pour obtenir un bilan clair :
 
-1. **Fetch homepage** — use `scripts/fetch_page.py` to retrieve HTML
-2. **Detect business type** — analyze homepage signals per seo orchestrator
-3. **Crawl site** — follow internal links up to 500 pages, respect robots.txt
-4. **Delegate to subagents** (if available, otherwise run inline sequentially):
-   - `seo-technical` — robots.txt, sitemaps, canonicals, Core Web Vitals, security headers
-   - `seo-content` — E-E-A-T, readability, thin content, AI citation readiness
-   - `seo-schema` — detection, validation, generation recommendations
-   - `seo-sitemap` — structure analysis, quality gates, missing pages
-   - `seo-performance` — LCP, INP, CLS measurements
-   - `seo-visual` — screenshots, mobile testing, above-fold analysis
-5. **Score** — aggregate into SEO Health Score (0-100)
-6. **Report** — generate prioritized action plan
+## Phase 1 : Crawl Technique
+Analyser l'état de la plateforme :
+□ Présence de pages en 404 ou de chaînes de redirection.
+□ Certificat SSL/HTTPS valide et non mixte.
+□ Titles ou H1 dupliqués ou manquants systématiques.
 
-## Crawl Configuration
+## Phase 2 : Architecture & Maillage
+□ Toutes les pages sont-elles accessibles en moins de 3 clics depuis la page d'accueil ?
+□ Les pages orphelines (existant dans le sitemap mais sans lien cliquable via le menu/site).
+□ La navigation locale est-elle pertinente (liens vers les zones desservies dans le footer) ?
 
-```
-Max pages: 500
-Respect robots.txt: Yes
-Follow redirects: Yes (max 3 hops)
-Timeout per page: 30 seconds
-Concurrent requests: 5
-Delay between requests: 1 second
-```
+## Phase 3 : Indexation et Robots.txt
+□ Le `robots.txt` bloque-t-il accidentellement le bot sur des ressources utiles ?
+□ Un sitemap.xml existe-t-il à la racine et est-il propre ?
+□ Balises `canonical` présentes sur tous les templates de base.
 
-## Output Files
+## Phase 4 : Contenu On-Page et Cannibalisation
+□ Cannibalisation : Plusieurs pages se battent-elles pour les mêmes mots-clés localisés ? (Ex: "Plombier Paris" vs "Intervention Plomberie Paris").
+□ Contenu "thin" : Pages ayant moins de 200 mots sans aucune valeur.
+□ Balisage Schema.org LocalBusiness ou FAQPage validé ?
 
-- `FULL-AUDIT-REPORT.md` — Comprehensive findings
-- `ACTION-PLAN.md` — Prioritized recommendations (Critical → High → Medium → Low)
-- `screenshots/` — Desktop + mobile captures (if Playwright available)
+## Phase 5 : L'enfer PAA / Featured Snippets
+Y a t'il de belles opportunités manquées sur des questions que se posent les clients ? Une FAQ exhaustive a-t-elle été intégrée ?
 
-## Scoring Weights
+## Phase 6 : Backlinks et Concurrents
+Si les APIs le permettent, utiliser les tools pour chercher le volume des mots clés, la puissance des concurrents sur ces mots locaux.
 
-| Category | Weight |
-|----------|--------|
-| Technical SEO | 25% |
-| Content Quality | 25% |
-| On-Page SEO | 20% |
-| Schema / Structured Data | 10% |
-| Performance (CWV) | 10% |
-| Images | 5% |
-| AI Search Readiness | 5% |
+## Phase 7 : Performance & UX (CWV)
+Core Web Vitals : LCP sous 2.5s, INP sous 200ms, Images sous formats web (WebP), pas de CLS à cause d'iframes mal chargées.
 
-## Report Structure
-
-### Executive Summary
-- Overall SEO Health Score (0-100)
-- Business type detected
-- Top 5 critical issues
-- Top 5 quick wins
-
-### Technical SEO
-- Crawlability issues
-- Indexability problems
-- Security concerns
-- Core Web Vitals status
-
-### Content Quality
-- E-E-A-T assessment
-- Thin content pages
-- Duplicate content issues
-- Readability scores
-
-### On-Page SEO
-- Title tag issues
-- Meta description problems
-- Heading structure
-- Internal linking gaps
-
-### Schema & Structured Data
-- Current implementation
-- Validation errors
-- Missing opportunities
-
-### Performance
-- LCP, INP, CLS scores
-- Resource optimization needs
-- Third-party script impact
-
-### Images
-- Missing alt text
-- Oversized images
-- Format recommendations
-
-### AI Search Readiness
-- Citability score
-- Structural improvements
-- Authority signals
-
-## Priority Definitions
-
-- **Critical**: Blocks indexing or causes penalties (fix immediately)
-- **High**: Significantly impacts rankings (fix within 1 week)
-- **Medium**: Optimization opportunity (fix within 1 month)
-- **Low**: Nice to have (backlog)
+## Phase 8 : Recommandations Priorisées (LIVRABLE)
+Restituer les résultats sous forme de matrice "Impact x Effort" :
+1. **Quick Wins** (Effort faible / Impact élevé) : Meta description locales, H1 dupliqués.
+2. **Backlog** (Effort moyen) : Re-rédaction de pages locales génériques.
+3. **Projets lourds** : Refonte du maillage, SSG si SPA client-side.
